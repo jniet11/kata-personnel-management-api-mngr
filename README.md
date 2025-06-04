@@ -12,6 +12,43 @@ La API permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) par
 
 La API utiliza un sistema de conexión a base de datos con pooling y maneja transacciones para operaciones críticas que involucran múltiples tablas (como la creación, actualización y eliminación de asignaciones) para asegurar la integridad de los datos.
 
+## Autenticación JWT
+
+El sistema de autenticación se implementó para asegurar el acceso a los recursos de la API, utilizando JSON Web Tokens.
+
+### Funcionamiento de la Autenticación:
+1.  **Tabla de Credenciales (`auth_credentials`):** Se utiliza una tabla dedicada en la base de datos MySQL para almacenar los correos electrónicos y los hashes de las contraseñas de los usuarios. Las contraseñas se hashean utilizando `bcryptjs` antes de su almacenamiento.
+2.  **Endpoint de Login (`POST /login`):**
+    *   Los usuarios envían su email y contraseña a través de este endpoint.
+    *   El backend (`authController.ts`) verifica las credenciales contra la tabla `auth_credentials`.
+    *   Si son válidas, se genera un JWT firmado con un secreto (`JWT_SECRET`) y con un tiempo de expiración (`JWT_EXPIRES_IN`), ambos configurables mediante variables de entorno.
+    *   Este token se devuelve al cliente.
+3.  **Protección de Rutas:**
+    *   Un middleware (`src/middleware/authMiddleware.ts`) intercepta las solicitudes a las rutas protegidas (por ejemplo, todas las rutas bajo `/personnel-management`).
+    *   Este middleware verifica la presencia y validez del JWT enviado en la cabecera `Authorization` (formato `Bearer <token>`).
+    *   Si el token es válido, se permite el acceso al recurso solicitado. De lo contrario, se devuelve un error `401 Unauthorized`.
+
+### Tecnologías Clave para JWT:
+*   **`jsonwebtoken`**: Para la generación y verificación de los tokens.
+*   **`bcryptjs`**: Para el hasheo seguro de contraseñas.
+
+### Uso por el Cliente:
+1.  El cliente realiza una solicitud `POST` a `/login` con sus credenciales (email y contraseña).
+2.  Al recibir el token JWT del backend, el cliente lo almacena de forma segura (e.g., en `localStorage` o `sessionStorage`).
+3.  Para acceder a rutas protegidas, el cliente debe incluir el token JWT en la cabecera `Authorization` de cada solicitud:
+    ```
+    Authorization: Bearer <tu_token_jwt>
+    ```
+
+## Estructura del Proyecto (Componentes Clave)
+
+*   `/src/config/db.ts`: Configuración y funciones de inicialización de la base de datos.
+*   `/src/controllers`: Lógica de negocio para cada ruta (e.g., `createUserController.ts`, `authController.ts`).
+*   `/src/middleware/authMiddleware.ts`: Middleware para la verificación de JWT.
+*   `/src/routes`: Definición de las rutas de la API (e.g., `personnelManagementRoutes.ts`, `authRoutes.ts`).
+*   `/src/app.ts`: Configuración principal de la aplicación Express y montaje de rutas.
+*   `/src/server.ts`: Punto de entrada que inicia el servidor.
+
 ## Tecnologías Utilizadas
 
 *   **Node.js:** Entorno de ejecución para JavaScript del lado del servidor. (Se recomienda la última versión LTS)
@@ -19,6 +56,8 @@ La API utiliza un sistema de conexión a base de datos con pooling y maneja tran
 *   **Express.js:** Framework web minimalista y flexible para Node.js.
 *   **MySQL2:** Cliente MySQL para Node.js, con soporte para Promesas.
 *   **Dotenv:** Módulo para cargar variables de entorno desde un archivo `.env`.
+*   **`jsonwebtoken`**: Para la generación y verificación de JSON Web Tokens.
+*   **`bcryptjs`**: Para el hasheo seguro de contraseñas.
 *   **ts-node:** Ejecución de TypeScript directamente en Node.js (para desarrollo).
 *   **Nodemon:** Herramienta que ayuda al desarrollo de aplicaciones basadas en Node.js reiniciando automáticamente la aplicación cuando detecta cambios en los archivos.
 
@@ -57,6 +96,9 @@ La API utiliza un sistema de conexión a base de datos con pooling y maneja tran
     DB_PORT=3306
     DB_NAME=personnel_management_db
     PORT=3000
+
+    JWT_SECRET=tu_secreto_super_seguro_aqui_largo_y_aleatorio
+    JWT_EXPIRES_IN=1h # Ejemplo: 1h para una hora, 7d para 7 días, 30m para 30 minutos
     ```
 
     Asegúrate de que la base de datos especificada en `DB_NAME` exista en tu servidor MySQL o que el script de inicialización pueda crearla.

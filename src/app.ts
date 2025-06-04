@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import personnelManagementRoutes from "./routes/personnelManagementRoutes";
+import { login } from "./controllers/authController";
+import { protect } from "./middleware/authMiddleware";
 
 const app = express();
 
@@ -11,6 +13,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("API funcionando correctamente 🚀");
 });
 
-app.use("/personnel-management", personnelManagementRoutes);
+app.post("/login", login);
+app.use("/personnel-management", protect, personnelManagementRoutes);
 
 export default app;
