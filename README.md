@@ -32,7 +32,7 @@ La API utiliza un sistema de conexión a base de datos con pooling y maneja tran
 
 1.  Clona el repositorio:
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone git@github.com:jniet11/kata-personnel-management-api-mngr.git
     cd kata-personnel-management-api-mngr
     ```
 
