@@ -65,6 +65,13 @@ const initDb = async () => {
       FOREIGN KEY (computer_id) REFERENCES computers(id) ON DELETE CASCADE
     )
   `);
+    await connection.execute(`
+    CREATE TABLE IF NOT EXISTS auth_credentials (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(100) NOT NULL UNIQUE,
+      password_hash VARCHAR(255) NOT NULL
+    )
+  `);
     console.log('Base de datos y tablas creadas');
 };
 exports.initDb = initDb;
