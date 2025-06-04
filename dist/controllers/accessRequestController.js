@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAccessRequest = exports.updateAccessRequest = exports.getAccessRequestById = exports.getAccessRequests = exports.createAccessRequest = void 0;
 const db_js_1 = require("../config/db.js");
 const ALLOWED_REQUEST_STATUSES = ["pendiente", "aprobado", "rechazado"];
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const createAccessRequest = async (req, res) => {
     console.log('Entramos el metodo del back');
     const { user_id, access_type } = req.body;
@@ -25,7 +30,6 @@ const createAccessRequest = async (req, res) => {
         res.status(201).json({
             success: true,
             accessRequestId: insertId,
-            // request: "solicitud de acceso", // Este campo no parece estándar en otras respuestas
             message: "Solicitud de acceso creada correctamente.",
         });
     }
@@ -38,6 +42,11 @@ const createAccessRequest = async (req, res) => {
     }
 };
 exports.createAccessRequest = createAccessRequest;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const getAccessRequests = async (req, res) => {
     try {
         const query = `
@@ -64,11 +73,16 @@ const getAccessRequests = async (req, res) => {
     }
 };
 exports.getAccessRequests = getAccessRequests;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const getAccessRequestById = async (req, res) => {
     const { id } = req.params;
     try {
         const query = `
-      SELECT ar.id, ar.user_id, u.name as user_name, u.email as user_email, ar.access_type, ar.status, ar.created_at 
+      SELECT ar.id, ar.user_id, u.name as user_name, u.email as user_email, ar.access_type, ar.status, ar.created_at
       FROM access_requests ar
       JOIN users u ON ar.user_id = u.id
       WHERE ar.id = ?
@@ -91,6 +105,11 @@ const getAccessRequestById = async (req, res) => {
     }
 };
 exports.getAccessRequestById = getAccessRequestById;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const updateAccessRequest = async (req, res) => {
     const { id } = req.params;
     const { user_id, access_type, status } = req.body;
@@ -104,7 +123,6 @@ const updateAccessRequest = async (req, res) => {
     const values = [];
     try {
         if (user_id !== undefined) {
-            // Validar que el nuevo user_id existe
             const userCheck = await (0, db_js_1.executeQuery)("SELECT id FROM users WHERE id = ?", [user_id]);
             if (userCheck.results.length === 0) {
                 res.status(404).json({ success: false, error: "El user_id proporcionado no corresponde a un usuario existente." });
@@ -130,7 +148,6 @@ const updateAccessRequest = async (req, res) => {
             values.push(status);
         }
         if (fieldsToUpdate.length === 0) {
-            // Este caso no debería ocurrir si la validación inicial es correcta, pero es una salvaguarda.
             res.status(400).json({ success: false, error: "No hay campos válidos para actualizar." });
         }
         const query = `UPDATE access_requests SET ${fieldsToUpdate.join(", ")} WHERE id = ?`;
@@ -155,6 +172,11 @@ const updateAccessRequest = async (req, res) => {
     }
 };
 exports.updateAccessRequest = updateAccessRequest;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const deleteAccessRequest = async (req, res) => {
     const { id } = req.params;
     try {

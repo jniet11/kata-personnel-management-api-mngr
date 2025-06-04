@@ -4,6 +4,11 @@ import { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 
 const ALLOWED_USER_STATUSES = ["pendiente", "aprobado", "rechazado"];
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, area, rol } = req.body;
   try {
@@ -24,6 +29,11 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const query = `SELECT id, name, status, email, area, role FROM users`;
@@ -59,6 +69,11 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, email, area, role, status } = req.body;
@@ -119,6 +134,11 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -141,6 +161,11 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const updateStatus = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;

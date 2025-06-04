@@ -4,11 +4,15 @@ import { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 
 const ALLOWED_REQUEST_STATUSES = ["pendiente", "aprobado", "rechazado"];
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const createAccessRequest = async (req: Request, res: Response) => {
   console.log('Entramos el metodo del back')
   const { user_id, access_type } = req.body;
   console.log("Los datos que llegana la back son: ", req.body);
-
   if (!user_id || !access_type) {
     res.status(400).json({
       success: false,
@@ -32,7 +36,6 @@ export const createAccessRequest = async (req: Request, res: Response) => {
     res.status(201).json({
       success: true,
       accessRequestId: insertId,
-      // request: "solicitud de acceso", // Este campo no parece estándar en otras respuestas
       message: "Solicitud de acceso creada correctamente.",
     });
   } catch (error) {
@@ -44,6 +47,11 @@ export const createAccessRequest = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const getAccessRequests = async (req: Request, res: Response) => {
   try {
     const query = `
@@ -70,11 +78,16 @@ export const getAccessRequests = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const getAccessRequestById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const query = `
-      SELECT ar.id, ar.user_id, u.name as user_name, u.email as user_email, ar.access_type, ar.status, ar.created_at 
+      SELECT ar.id, ar.user_id, u.name as user_name, u.email as user_email, ar.access_type, ar.status, ar.created_at
       FROM access_requests ar
       JOIN users u ON ar.user_id = u.id
       WHERE ar.id = ?
@@ -97,6 +110,11 @@ export const getAccessRequestById = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const updateAccessRequest = async (
   req: Request,
   res: Response
@@ -116,7 +134,6 @@ export const updateAccessRequest = async (
 
   try {
     if (user_id !== undefined) {
-      // Validar que el nuevo user_id existe
       const userCheck = await executeQuery("SELECT id FROM users WHERE id = ?", [user_id]);
       if ((userCheck.results as RowDataPacket[]).length === 0) {
         res.status(404).json({ success: false, error: "El user_id proporcionado no corresponde a un usuario existente." });
@@ -145,7 +162,6 @@ export const updateAccessRequest = async (
     }
 
     if (fieldsToUpdate.length === 0) {
-      // Este caso no debería ocurrir si la validación inicial es correcta, pero es una salvaguarda.
       res.status(400).json({ success: false, error: "No hay campos válidos para actualizar." });
     }
 
@@ -172,6 +188,11 @@ export const updateAccessRequest = async (
   }
 };
 
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 export const deleteAccessRequest = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

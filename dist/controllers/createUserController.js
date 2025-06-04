@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateStatus = exports.deleteUser = exports.updateUser = exports.getUsers = exports.createUser = void 0;
 const db_js_1 = require("../config/db.js");
 const ALLOWED_USER_STATUSES = ["pendiente", "aprobado", "rechazado"];
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const createUser = async (req, res) => {
     const { name, email, area, rol } = req.body;
     try {
@@ -21,6 +26,11 @@ const createUser = async (req, res) => {
     }
 };
 exports.createUser = createUser;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const getUsers = async (req, res) => {
     try {
         const query = `SELECT id, name, status, email, area, role FROM users`;
@@ -52,6 +62,11 @@ const getUsers = async (req, res) => {
     }
 };
 exports.getUsers = getUsers;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, email, area, role, status } = req.body;
@@ -107,6 +122,11 @@ const updateUser = async (req, res) => {
     }
 };
 exports.updateUser = updateUser;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
@@ -129,6 +149,11 @@ const deleteUser = async (req, res) => {
     }
 };
 exports.deleteUser = deleteUser;
+/**
+ * @description Crea una nueva asignación de computadora a un usuario.
+ * @param req Request con user_id, serial_number y opcionalmente assigned_at en el body.
+ * @param res Response
+ */
 const updateStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;

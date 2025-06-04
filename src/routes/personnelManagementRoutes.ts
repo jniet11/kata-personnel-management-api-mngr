@@ -14,12 +14,12 @@ import {
   deleteAccessRequest,
 } from "../controllers/accessRequestController.js";
 import {
-  createComputer,
-  getComputers,
-  getComputerById,
-  updateComputer,
-  // deleteComputer, // Si se implementa
-} from "../controllers/computerController.js";
+  createAssignment,
+  getAssignments,
+  getAssignmentById,
+  deleteAssignment,
+  updateAssignment
+} from "../controllers/assignmentController.js";
 
 const router = Router();
 
@@ -32,12 +32,13 @@ router.post("/create-update-status/:id", updateStatus);
 router.get("/get-access-requests", getAccessRequests);
 router.post("/create-access-request", createAccessRequest);
 router.put("/update-access-request/:id", updateAccessRequest);
-router.get("/get-access-request-by-id/:id", getAccessRequestById);
 router.delete("/delete-access-request/:id", deleteAccessRequest);
+router.get("/get-access-request-by-id/:id", getAccessRequestById);
 
-router.post("/", createComputer);
-router.get("/", getComputers);
-router.get("/:id", getComputerById);
-router.put("/:id", updateComputer);
+router.get("/get-assignments", getAssignments);
+router.post("/create-assignment", createAssignment);
+router.put("/update-assignment/:id", updateAssignment);
+router.delete("/delete-assignment/:id", deleteAssignment);
+router.get("/get-assignment-by-id/:id", getAssignmentById);
 
 export default router;

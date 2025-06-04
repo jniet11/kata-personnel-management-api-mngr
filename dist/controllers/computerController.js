@@ -81,7 +81,6 @@ const updateComputer = async (req, res) => {
             error: "No se proporcionaron datos para actualizar.",
         });
     }
-    // Construcción dinámica de la consulta similar a updateUser
     const fieldsToUpdate = [];
     const values = [];
     if (serial_number !== undefined) {
@@ -93,7 +92,6 @@ const updateComputer = async (req, res) => {
         values.push(model);
     }
     if (fieldsToUpdate.length === 0) {
-        // Doble chequeo por si acaso
         res.status(400).json({
             success: false,
             error: "No hay campos válidos para actualizar.",
@@ -117,5 +115,3 @@ const updateComputer = async (req, res) => {
     }
 };
 exports.updateComputer = updateComputer;
-// deleteComputer se omite intencionalmente si las computadoras no deben eliminarse una vez asignadas o si hay FK constraints.
-// Si se necesita, se puede añadir con cuidado de las asignaciones.

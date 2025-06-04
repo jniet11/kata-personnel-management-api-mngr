@@ -67,6 +67,7 @@ export const initDb = async () => {
       user_id INT,
       computer_id INT,
       assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      status ENUM('pendiente', 'aprobado', 'rechazado') DEFAULT 'pendiente',
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (computer_id) REFERENCES computers(id) ON DELETE CASCADE
     )
