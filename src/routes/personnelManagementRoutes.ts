@@ -18,7 +18,8 @@ import {
   getAssignments,
   getAssignmentById,
   deleteAssignment,
-  updateAssignment
+  updateAssignment,
+  getComputers
 } from "../controllers/assignmentController.js";
 
 const router = Router();
@@ -40,5 +41,6 @@ router.post("/create-assignment", createAssignment);
 router.put("/update-assignment/:id", updateAssignment);
 router.delete("/delete-assignment/:id", deleteAssignment);
 router.get("/get-assignment-by-id/:id", getAssignmentById);
+router.get("/get-computers", getComputers);
 
 export default router;

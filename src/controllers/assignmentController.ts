@@ -423,3 +423,26 @@ export const updateAssignment = async (req: Request, res: Response) => {
     connection.release();
   }
 };
+
+export const getComputers = async (req: Request, res: Response) => {
+  try {
+    const query = "SELECT id, serial_number, model, is_assigned FROM computers ORDER BY id ASC";
+    const queryResult: QueryResult = await executeQuery(query);
+
+    if (!Array.isArray(queryResult.results)) {
+      console.error("Error al obtener equipos: formato de resultados inesperado.");
+      res.status(500).json({
+        success: false,
+        error: "Error interno del servidor al recuperar datos de equipos.",
+      });
+    }
+    res.status(200).json({ success: true, data: queryResult.results });
+  } catch (error) {
+    console.error("Error al obtener equipos de cómputo:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error interno del servidor al obtener los equipos de cómputo.",
+    });
+  }
+};
+

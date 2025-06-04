@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAssignment = exports.deleteAssignment = exports.getAssignmentById = exports.getAssignments = exports.createAssignment = void 0;
+exports.getComputers = exports.updateAssignment = exports.deleteAssignment = exports.getAssignmentById = exports.getAssignments = exports.createAssignment = void 0;
 const db_js_1 = __importStar(require("../config/db.js"));
 const ALLOWED_ASSIGNMENT_STATUSES = ["pendiente", "aprobado", "rechazado"];
 /**
@@ -373,3 +373,25 @@ const updateAssignment = async (req, res) => {
     }
 };
 exports.updateAssignment = updateAssignment;
+const getComputers = async (req, res) => {
+    try {
+        const query = "SELECT id, serial_number, model, is_assigned FROM computers ORDER BY id ASC";
+        const queryResult = await (0, db_js_1.executeQuery)(query);
+        if (!Array.isArray(queryResult.results)) {
+            console.error("Error al obtener equipos: formato de resultados inesperado.");
+            res.status(500).json({
+                success: false,
+                error: "Error interno del servidor al recuperar datos de equipos.",
+            });
+        }
+        res.status(200).json({ success: true, data: queryResult.results });
+    }
+    catch (error) {
+        console.error("Error al obtener equipos de cómputo:", error);
+        res.status(500).json({
+            success: false,
+            error: "Error interno del servidor al obtener los equipos de cómputo.",
+        });
+    }
+};
+exports.getComputers = getComputers;

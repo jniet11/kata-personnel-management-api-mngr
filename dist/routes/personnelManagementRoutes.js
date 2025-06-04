@@ -20,4 +20,5 @@ router.post("/create-assignment", assignmentController_js_1.createAssignment);
 router.put("/update-assignment/:id", assignmentController_js_1.updateAssignment);
 router.delete("/delete-assignment/:id", assignmentController_js_1.deleteAssignment);
 router.get("/get-assignment-by-id/:id", assignmentController_js_1.getAssignmentById);
+router.get("/get-computers", assignmentController_js_1.getComputers);
 exports.default = router;
